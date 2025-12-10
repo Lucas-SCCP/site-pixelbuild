@@ -4,6 +4,7 @@ import App from './App'
 import { HelmetProvider } from 'react-helmet-async'
 import reportWebVitals from './reportWebVitals'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './style.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
