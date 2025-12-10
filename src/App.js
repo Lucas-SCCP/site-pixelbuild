@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { MainLayout, PageRenderer, ConstructorService, Loading } from 'website-lib'
 
@@ -44,24 +45,31 @@ function App() {
   }
   
   return (
-    <Router>
-      <Routes>
-        <Route element={<MainLayout website={website} />}>
-          {website.pages.map((page) => (
-            <Route
-              key={page.path}
-              path={page.path}
-              element={
-                <PageRenderer
-                  website={website}
-                  page={page}
-                />
-              }
-            />
-          ))}
-        </Route>
-      </Routes>
-    </Router>
+    <Container>
+      <Row>
+        <Col>
+          1
+        </Col>
+      </Row>
+    </Container>
+    // <Router>
+    //   <Routes>
+    //     <Route element={<MainLayout website={website} />}>
+    //       {website.pages.map((page) => (
+    //         <Route
+    //           key={page.path}
+    //           path={page.path}
+    //           element={
+    //             <PageRenderer
+    //               website={website}
+    //               page={page}
+    //             />
+    //           }
+    //         />
+    //       ))}
+    //     </Route>
+    //   </Routes>
+    // </Router>
   )
 }
 
