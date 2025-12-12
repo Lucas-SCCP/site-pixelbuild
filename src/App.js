@@ -139,6 +139,18 @@ function App() {
     }
   }
 
+  const handleAssinar = (planId) => async (e) => {
+    e.preventDefault()
+
+    setPlan(planId)
+
+    const el = document.getElementById('assinar');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if ('focus' in el) el.focus({ preventScroll: true });
+    }
+  }
+
   const createBody = (message) => {
     return {
       'senderName': 'Site PixelBuild',
@@ -203,25 +215,30 @@ function App() {
               <img alt="NOIS" src="/favicon.ico" className="d-inline-block align-top website-navbar-brand-logo" />
               <span className="tiktok-sans fw-700" style={{ color: '#FFF', fontSize: '1.5rem' }}>PixelBuild</span>
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="offcanvasNavbar-expand" style={{ border: '1px solid var(--blue3)' }} />
+            <Navbar.Toggle aria-controls="offcanvasNavbar-expand" style={{ border: '1px solid var(--muted)' }} />
             <Navbar.Offcanvas id="offcanvasNavbar-expand" aria-labelledby="offcanvasNavbarLabel-expand" placement="end">
               <Offcanvas.Header closeButton>
-                <Offcanvas.Title id="offcanvasNavbarLabel-expand">Painel Administrativo</Offcanvas.Title>
+                <Offcanvas.Title id="offcanvasNavbarLabel-expand"></Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="w-100">
                   <div className="menu-direita">
-                    <Nav.Link className='website-navbar-button'>
+                    <Nav.Link href="#recursos" className='website-navbar-button'>
                       Recursos
                     </Nav.Link>
-                    <Nav.Link className='website-navbar-button'>
+                    <Nav.Link href="#como-funciona" className='website-navbar-button'>
                       Como funciona
                     </Nav.Link>
-                    <Nav.Link className='website-navbar-button'>
+                    <Nav.Link href="#preco" className='website-navbar-button'>
                       Preços
                     </Nav.Link>
-                    <Nav.Link className='website-navbar-button' href="https://painel.pixelbuild.com.br" rel="noreferrer" target="_blank">
+                    <Nav.Link href="#assinar" className='website-navbar-button'>
                       <div class="btn primary">
+                        Assinar
+                      </div>
+                    </Nav.Link>
+                    <Nav.Link className='website-navbar-button' href="https://painel.pixelbuild.com.br" rel="noreferrer" target="_blank">
+                      <div class="btn ghost">
                         Entrar
                       </div>
                     </Nav.Link>
@@ -266,7 +283,7 @@ function App() {
           </Container>
         </Col>
       </Row>
-      <Row>
+      <Row id="recursos">
         <Col className='mt-5'>
           <Container>
             <Row>
@@ -304,7 +321,7 @@ function App() {
           </Container>
         </Col>
       </Row>
-      <Row>
+      <Row id="como-funciona">
         <Col className='mt-5'>
           <Container>
             <Row>
@@ -340,7 +357,7 @@ function App() {
           </Container>
         </Col>
       </Row>
-      <Row>
+      <Row id="preco">
         <Col className='mt-5'>
           <Container>
             <Row>
@@ -359,7 +376,7 @@ function App() {
                     <li>✔️ Domínio personalizado + Certificado SSL</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn">Assinar Lite</div>
+                    <div class="btn" onClick={handleAssinar(1)}>Assinar Lite</div>
                   </div>
                 </div>
               </Col>
@@ -374,7 +391,7 @@ function App() {
                     <li>✔️ Google Analytics</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn primary">Assinar Basic</div>
+                    <div class="btn primary" onClick={handleAssinar(2)}>Assinar Basic</div>
                   </div>
                 </div>
               </Col>
@@ -389,7 +406,7 @@ function App() {
                     <li>✔️ Integrações</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn">Assinar Standard</div>
+                    <div class="btn" onClick={handleAssinar(3)}>Assinar Standard</div>
                   </div>
                 </div>
               </Col>
@@ -404,7 +421,7 @@ function App() {
                     <li>✔️ Suporte prioritário</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn">Assinar Plus</div>
+                    <div class="btn" onClick={handleAssinar(4)}>Assinar Plus</div>
                   </div>
                 </div>
               </Col>
@@ -442,18 +459,18 @@ function App() {
           </Container>
         </Col>
       </Row>
-      <Row>
+      <Row id="assinar">
         <Col>
           <Container>
             <Row>
               <Col lg={{ span: 6, offset: 3 }} className='mt-5'>
                 <div class="quote" style={{ padding: '2em' }}>
-                  <div className='mt-5 mb-5 text-center' style={{ margin: '50px' }}>
+                  <div className='mt-5 mb-5 text-center form'>
                     <div style={{ fontSize: '24px' }}>
                       Preencha os dados abaixo para criar a sua conta.
                     </div>
                   </div>
-                  <Form id="formulario" className='mb-5' style={{ margin: '50px' }}>
+                  <Form id="formulario" className='mb-5 form'>
                     <Row>
                       <Col lg={6}>
                         <Form.Group className="mb-3">
