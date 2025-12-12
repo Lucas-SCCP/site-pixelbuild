@@ -78,8 +78,7 @@ a{color:inherit;text-decoration:none}
   min-height: 13em;
 }
 .step::before {
-  counter-increment: step;
-  content: counter(step);
+  content: attr(data-step);
   position:absolute;
   top:-12px;
   left:-12px;

@@ -1,10 +1,159 @@
 import { useEffect, useState } from 'react'
-import { Navbar, Offcanvas, Nav, Container, Row, Col } from 'react-bootstrap'
+import { Navbar, Offcanvas, Nav, Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap'
 import { ConstructorService, Loading } from 'website-lib'
+import InputMask from "react-input-mask";
 
 function App() {
 
   const [website, setWebsite] = useState(undefined)
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [plan, setPlan] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleChange = (fn) => (e) => {
+    e.target.style.border = '';
+    fn(e);
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (loading) return
+    setLoading(true)
+
+    if (!formValidate()) {
+      setLoading(false)
+      return
+    }
+
+    setError(false)
+
+    const planNames = {
+      '1': 'Lite - R$ 9,99/mês',
+      '2': 'Basic - R$ 19,99/mês',
+      '3': 'Standard - R$ 49,99/mês',
+      '4': 'Plus - R$ 89,99/mês'
+    }
+
+    const message = `Novo cadastro via site:
+      Nome: ${firstName} ${lastName}
+      Email: ${email}
+      Celular: ${phone}
+      Plano: ${planNames[plan]}
+    `
+
+    if (!await sendMail(message)) {
+      setError(true);
+      console.log('Notification sending failed')
+      return;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPhone('');
+    setPlan('');
+
+    setLoading(false);
+  };
+
+  const formValidate = () => {
+    if (!firstName || firstName.length < 3) {
+      const fieldName = document.getElementById('formFirstName');
+      fieldName.focus();
+      fieldName.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldName.style.border = '5px solid red';
+      return false;
+    }
+
+    if (!lastName || lastName.length < 3) {
+      const fieldLastName = document.getElementById('formLastName');
+      fieldLastName.focus();
+      fieldLastName.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldLastName.style.border = '5px solid red';
+      return false;
+    }
+
+    if (!email || !emailValidate(email)) {
+      const fieldEmail = document.getElementById('formEmail');
+      console.log('fieldEmail', fieldEmail)
+      console.log('email', email)
+      fieldEmail.focus();
+      fieldEmail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldEmail.style.border = '5px solid red';
+      return false;
+    }
+
+    if (!phone || !phoneValidate(phone)) {
+      const fieldPhone = document.getElementById('formPhone');
+      fieldPhone.focus();
+      fieldPhone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldPhone.style.border = '5px solid red';
+      return false;
+    }
+
+    if (plan === '' || plan === '0') {
+      const fieldPlan = document.getElementById('formPlan');
+      fieldPlan.focus();
+      fieldPlan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldPlan.style.border = '5px solid red';
+      return false;
+    }
+
+    return true;
+  }
+
+  const phoneValidate = (phone) => {
+    return /^\(\d{2}\) \d{5}-\d{4}$/.test(phone)
+  }
+
+  const emailValidate = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+
+  const sendMail = async (data) => {
+    const body = createBody(data)
+    const response = await fetch(`${process.env.REACT_APP_API_CONTROLLER}/send-mail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Website-Id': process.env.REACT_APP_WEBSITE_ID,
+        'Authorization': `Bearer ${process.env.REACT_APP_API_MAIL_KEY}`
+      },
+      body: JSON.stringify(body)
+    })
+
+    if (response.ok) {
+      return true
+    } else {
+      setError(true);
+      return false
+    }
+  }
+
+  const createBody = (message) => {
+    return {
+      'senderName': 'Site ',
+      'sender': 'contato@nois.dev.br',
+      'recipientName': 'Site',
+      'recipient': 'lucas.2601@gmail.com',
+      'title': 'Nova inscrição via site',
+      'message': message,
+      'lead': {
+        'formId': 18,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phone': phone
+      }
+    }
+  }
 
   useEffect(() => {
 
@@ -161,26 +310,26 @@ function App() {
                 <h2>Como funciona</h2>
                 <p class="lead">Em 4 passos simples você coloca seu projeto no ar.</p>
               </Col>
-              <Col lg={3}>
-                <div class="step">
+              <Col lg={3} className='mt-md-0 mt-3'>
+                <div class="step" data-step="1">
                   <h3>1. Crie sua conta</h3>
                   <p>Cadastre-se com seu e‑mail.</p>
                 </div>
               </Col>
-              <Col lg={3}>
-                <div class="step">
+              <Col lg={3} className='mt-md-0 mt-3'>
+                <div class="step" data-step="2">
                   <h3>2. Conecte seu domínio</h3>
                   <p>Conecte <em>seusite.com.br</em> com SSL automático.</p>
                 </div>
               </Col>
-              <Col lg={3}>
-                <div class="step">
+              <Col lg={3} className='mt-md-0 mt-3'>
+                <div class="step" data-step="3">
                   <h3>3. Personalize</h3>
                   <p>Selecione um layout inicial e personalize cores, fontes e imagens.</p>
                 </div>
               </Col>
-              <Col lg={3}>
-                <div class="step">
+              <Col lg={3} className='mt-md-0 mt-3'>
+                <div class="step" data-step="4">
                   <h3>4. Monte suas páginas</h3>
                   <p>Arraste blocos, escreva seu conteúdo e publique em um clique.</p>
                 </div>
@@ -197,7 +346,7 @@ function App() {
                 <h2>Planos simples, preço honesto</h2>
                 <p class="lead">Comece grátis e faça upgrade quando precisar. Sem taxa escondida.</p>
               </Col>
-              <Col lg={3}>
+              <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
                   <h3>Lite</h3>
                   <div class="value">R$ 9<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
@@ -212,7 +361,7 @@ function App() {
                   </div>
                 </div>
               </Col>
-              <Col lg={3}>
+              <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price popular">
                   <h3>Basic</h3>
                   <div class="value">R$ 19<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
@@ -227,7 +376,7 @@ function App() {
                   </div>
                 </div>
               </Col>
-              <Col lg={3}>
+              <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
                   <h3>Standard</h3>
                   <div class="value">R$ 49<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
@@ -242,7 +391,7 @@ function App() {
                   </div>
                 </div>
               </Col>
-              <Col lg={3}>
+              <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
                   <h3>Plus</h3>
                   <div class="value">R$ 89<span style={{fontSize:'.9rem',fontWeight:'600'}}>/mês</span></div>
@@ -269,22 +418,125 @@ function App() {
                 <h2>Quem usa, recomenda</h2>
                 <p class="lead">Empreendedores, criadores e pequenas empresas já possuem sites com o <b>PixelBuild</b>.</p>
               </Col>
-              <Col lg={4}>
+              <Col lg={4} className='mt-3'>
                 <div class="quote">
                   <p>“Em um sábado de manhã publiquei meu site e comecei a vender no mesmo dia. Sem desenvolvedor, sem complicação.”</p>
                   <div class="who">Robson</div>
                 </div>
               </Col>
-              <Col lg={4}>
+              <Col lg={4} className='mt-3'>
                 <div class="quote">
                   <p>“Troquei de tema duas vezes sem perder nada. O editor é muito intuitivo e o SEO já vem pronto.”</p>
                   <div class="who">Marcos</div>
                 </div>
               </Col>
-              <Col lg={4}>
+              <Col lg={4} className='mt-3'>
                 <div class="quote">
                   <p>“O melhor custo‑benefício para quem precisa de agilidade. Publicamos dezenas de landing pages em uma semana.”</p>
                   <div class="who">Gabriel</div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Container>
+            <Row>
+              <Col lg={{ span: 6, offset: 3 }} className='mt-5'>
+                <div class="quote" style={{ padding: '2em' }}>
+                  <div className='mt-5 mb-5 text-center' style={{ margin: '50px' }}>
+                    <div style={{ fontSize: '24px' }}>
+                      Preencha os dados abaixo para criar a sua conta.
+                    </div>
+                  </div>
+                  <Form id="formulario" className='mb-5' style={{ margin: '50px' }}>
+                    <Row>
+                      <Col lg={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Nome</Form.Label>
+                          <Form.Control
+                            id="formFirstName"
+                            type="text"
+                            placeholder="Digite o seu nome"
+                            value={firstName}
+                            onChange={handleChange(e => setFirstName(e.target.value))}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col lg={6}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Sobrenome</Form.Label>
+                          <Form.Control
+                            id="formLastName"
+                            type="text"
+                            placeholder="Digite o seu sobrenome"
+                            value={lastName}
+                            onChange={handleChange(e => setLastName(e.target.value))}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col lg={12}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>E-mail</Form.Label>
+                          <Form.Control
+                            id="formEmail"
+                            type="email"
+                            placeholder="Digite o seu e-mail" 
+                            value={email}
+                            onChange={handleChange(e => setEmail(e.target.value))}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col lg={12}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Telefone</Form.Label>
+                          <Form.Control
+                            id="formPhone"
+                            as={InputMask}
+                            mask='(99) 99999-9999'
+                            placeholder="(99) 99999-9999"
+                            value={phone}
+                            onChange={handleChange(e => setPhone(e.target.value))}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col lg={12}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Plano</Form.Label>
+                          <Form.Select id="formPlan" aria-label="Selecione o plano" value={plan} onChange={handleChange(e => setPlan(e.target.value))}>
+                            <option value='0'>Selecione uma opção</option>
+                            <option value='1'>Lite - R$ 9,99/mês</option>
+                            <option value='2'>Basic - R$ 19,99/mês</option>
+                            <option value='3'>Standard - R$ 49,99/mês</option>
+                            <option value='4'>Plus - R$ 89,99/mês</option>
+                          </Form.Select>
+                        </Form.Group>
+                      </Col>
+                      <Col lg={12}>
+                        <Button onClick={handleSubmit} disabled={loading} className='mt-3' style={{ fontSize: '18px', backgroundColor: 'var(--ring)', border: 'none', width: '100%' }}>
+                          {loading ? (
+                          <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />{" "}
+                            ENVIANDO...
+                          </>
+                        ) : (
+                          "ENVIAR"
+                        )}
+                        </Button>
+                        <Alert variant="danger" className='mt-3 text-center' style={{ display: error ? 'block' : 'none' }}>
+                          <b>Ops!</b> Ocorreu um problema ao enviar seu cadastro. Por favor, tente novamente.
+                        </Alert>
+                      </Col>
+                    </Row>
+                  </Form>
                 </div>
               </Col>
             </Row>
