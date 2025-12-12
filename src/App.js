@@ -13,6 +13,7 @@ function App() {
   const [plan, setPlan] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (fn) => (e) => {
     e.target.style.border = '';
@@ -61,6 +62,7 @@ function App() {
     setPlan('');
 
     setLoading(false);
+    setSuccess(true);
   };
 
   const formValidate = () => {
@@ -139,10 +141,10 @@ function App() {
 
   const createBody = (message) => {
     return {
-      'senderName': 'Site ',
+      'senderName': 'Site PixelBuild',
       'sender': 'contato@nois.dev.br',
       'recipientName': 'Site',
-      'recipient': 'lucas.2601@gmail.com',
+      'recipient': 'pixelbuildapp@gmail.com',
       'title': 'Nova inscrição via site',
       'message': message,
       'lead': {
@@ -533,6 +535,14 @@ function App() {
                         </Button>
                         <Alert variant="danger" className='mt-3 text-center' style={{ display: error ? 'block' : 'none' }}>
                           <b>Ops!</b> Ocorreu um problema ao enviar seu cadastro. Por favor, tente novamente.
+                        </Alert>
+                        <Alert variant="success" className='mt-3 text-center' style={{ display: success ? 'block' : 'none' }}>
+                          <div>
+                            <b>Cadastro enviado com sucesso!</b>
+                          </div>
+                          <div>
+                            Em breve entraremos em contato.
+                          </div>
                         </Alert>
                       </Col>
                     </Row>
