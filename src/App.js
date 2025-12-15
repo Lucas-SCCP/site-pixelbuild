@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Navbar, Offcanvas, Nav, Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap'
-import { ConstructorService, Loading } from 'website-lib'
+import { ConstructorService, Loading, analyticsService } from 'website-lib'
 import InputMask from "react-input-mask";
 
 function App() {
@@ -170,6 +170,8 @@ function App() {
   }
 
   useEffect(() => {
+
+    analyticsService.pageView('/', 'Página inicial')
 
     const constructorService = new ConstructorService()
 
