@@ -34,10 +34,10 @@ function App() {
     setError(false)
 
     const planNames = {
-      '1': 'Lite - R$ 9,99/mês',
-      '2': 'Basic - R$ 19,99/mês',
-      '3': 'Standard - R$ 49,99/mês',
-      '4': 'Plus - R$ 89,99/mês'
+      '1': 'Inicial - R$ 9,99/mês',
+      '2': 'Essencial - R$ 19,99/mês',
+      '3': 'Completo - R$ 49,99/mês',
+      '4': 'Profissional - R$ 89,99/mês'
     }
 
     const message = `Novo cadastro via site:
@@ -369,61 +369,66 @@ function App() {
               </Col>
               <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
-                  <h3>Lite</h3>
+                  <h3>Inicial</h3>
                   <div class="value">R$ 9<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
                   <ul>
                     <li>✔️ 1 página</li>
+                    <li>✔️ 1 usuário</li>
                     <li>✔️ Formulário</li>
                     <li>✔️ Ideal para landing pages</li>
                     <li>✔️ Domínio personalizado + Certificado SSL</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn" onClick={handleAssinar(1)}>Assinar Lite</div>
+                    <div class="btn" onClick={handleAssinar(1)}>Assinar Inicial</div>
                   </div>
                 </div>
               </Col>
               <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price popular">
-                  <h3>Basic</h3>
+                  <h3>Essencial</h3>
                   <div class="value">R$ 19<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
                   <ul>
-                    <li>✔️ Tudo do Lite</li>
+                    <li>✔️ Tudo do Inicial</li>
                     <li>✔️ 5 páginas</li>
+                    <li>✔️ 3 usuários</li>
                     <li>✔️ SEO avançado</li>
                     <li>✔️ Google Analytics</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn primary" onClick={handleAssinar(2)}>Assinar Basic</div>
+                    <div class="btn primary" onClick={handleAssinar(2)}>Assinar Essencial</div>
                   </div>
                 </div>
               </Col>
               <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
-                  <h3>Standard</h3>
+                  <h3>Completo</h3>
                   <div class="value">R$ 49<span style={{fontSize:'.9rem',fontWeight:'600'}}>,99/mês</span></div>
                   <ul>
-                    <li>✔️ Tudo do Basic</li>
-                    <li>✔️ Páginas ilimitadas</li>
+                    <li>✔️ Tudo do Essencial</li>
+                    <li>✔️ 15 Páginas</li>
+                    <li>✔️ 5 usuários</li>
                     <li>✔️ Usuários e permissões</li>
                     <li>✔️ Integrações</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn" onClick={handleAssinar(3)}>Assinar Standard</div>
+                    <div class="btn" onClick={handleAssinar(3)}>Assinar Completo</div>
                   </div>
                 </div>
               </Col>
               <Col lg={3} className='mt-md-0 mt-3'>
                 <div class="price">
-                  <h3>Plus</h3>
+                  <h3>Profissional</h3>
                   <div class="value">R$ 89<span style={{fontSize:'.9rem',fontWeight:'600'}}>/mês</span></div>
                   <ul>
-                    <li>✔️ Tudo do Standard</li>
+                    <li>✔️ Tudo do Completo</li>
+                    <li>✔️ Páginas ilimitadas</li>
+                    <li>✔️ 10 usuários</li>
                     <li>✔️ Loja + pagamentos</li>
                     <li>✔️ Blog</li>
                     <li>✔️ Suporte prioritário</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
-                    <div class="btn" onClick={handleAssinar(4)}>Assinar Plus</div>
+                    <div class="btn" onClick={handleAssinar(4)}>Assinar Profissional</div>
                   </div>
                 </div>
               </Col>
@@ -467,7 +472,7 @@ function App() {
             <Row>
               <Col lg={{ span: 6, offset: 3 }} className='mt-5'>
                 <div class="quote" style={{ padding: '2em' }}>
-                  <div className='mt-5 mb-5 text-center form'>
+                  <div className='text-center form'>
                     <div style={{ fontSize: '24px' }}>
                       Preencha os dados abaixo para criar a sua conta.
                     </div>
@@ -528,10 +533,10 @@ function App() {
                           <Form.Label>Plano</Form.Label>
                           <Form.Select id="formPlan" aria-label="Selecione o plano" value={plan} onChange={handleChange(e => setPlan(e.target.value))}>
                             <option value='0'>Selecione uma opção</option>
-                            <option value='1'>Lite - R$ 9,99/mês</option>
-                            <option value='2'>Basic - R$ 19,99/mês</option>
-                            <option value='3'>Standard - R$ 49,99/mês</option>
-                            <option value='4'>Plus - R$ 89,99/mês</option>
+                            <option value='1'>Inicial - R$ 9,99/mês</option>
+                            <option value='2'>Essencial - R$ 19,99/mês</option>
+                            <option value='3'>Completo - R$ 49,99/mês</option>
+                            <option value='4'>Profissional - R$ 89,99/mês</option>
                           </Form.Select>
                         </Form.Group>
                       </Col>
