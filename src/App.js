@@ -376,7 +376,7 @@ function App() {
                     <li>✔️ 1 usuário</li>
                     <li>✔️ Formulário</li>
                     <li>✔️ Ideal para landing pages</li>
-                    <li>✔️ Domínio personalizado + Certificado SSL</li>
+                    <li>✔️ Domínio + Certificado SSL</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
                     <div class="btn" onClick={handleAssinar(1)}>Assinar Inicial</div>
@@ -407,7 +407,7 @@ function App() {
                     <li>✔️ Tudo do Essencial</li>
                     <li>✔️ 15 Páginas</li>
                     <li>✔️ 5 usuários</li>
-                    <li>✔️ Usuários e permissões</li>
+                    <li>✔️ Blog</li>
                     <li>✔️ Integrações</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
@@ -424,7 +424,6 @@ function App() {
                     <li>✔️ Páginas ilimitadas</li>
                     <li>✔️ 10 usuários</li>
                     <li>✔️ Loja + pagamentos</li>
-                    <li>✔️ Blog</li>
                     <li>✔️ Suporte prioritário</li>
                   </ul>
                   <div style={{marginTop:'16px'}}>
